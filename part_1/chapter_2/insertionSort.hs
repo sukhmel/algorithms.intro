@@ -2,6 +2,9 @@
 
 module InsertSort where
 
+import Test.QuickCheck
+import Data.List (sort)
+
 insertionSortBy :: forall a. (a -> a -> Bool) -> [a] -> [a]
 insertionSortBy f = innerSort 2
               where
@@ -27,3 +30,15 @@ insertionSortBy f = innerSort 2
                                                                   ++ [candidate]
                                              else ys
                     drownSort rest = rest
+
+prop_Negation    :: [Int] -> Bool
+prop_Negation xs = insertionSortBy (<) xs == reverse (insertionSortBy (flip (<)) xs)
+
+prop_Length      :: [Int] -> Bool
+prop_Length   xs = length xs == length (insertionSortBy (<) xs)
+
+prop_Safety      :: [Int] -> Bool
+prop_Safety   xs = sort xs == sort (insertionSortBy (<) xs)
+
+prop_Correct     :: [Int] -> Bool
+prop_Correct  xs = sort xs == insertionSortBy (<) xs
