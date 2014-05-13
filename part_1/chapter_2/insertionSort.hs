@@ -3,6 +3,7 @@
 module InsertSort where
 
 import Data.List (sort)
+import Test.QuickCheck
 
 -- Implementation of insertion sorting. At each step beginning of a list is
 -- already  sorted,  first  element of  ending  is taken  and inserted into
@@ -43,3 +44,9 @@ prop_Safety   xs = sort xs == sort (insertionSortBy (<) xs)
 -- a little cheat ;-)
 prop_Correct     :: [Int] -> Bool
 prop_Correct  xs = sort xs == insertionSortBy (<) xs
+
+main :: IO ()
+main = mapM_ quickCheck [ prop_Safety
+                        , prop_Negation
+                        , prop_Length
+                        , prop_Correct ]

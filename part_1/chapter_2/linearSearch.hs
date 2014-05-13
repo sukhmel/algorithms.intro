@@ -30,3 +30,8 @@ prop_Minimal       :: Int -> [Int] -> Property
 prop_Minimal  a as = a `elem` as    ==>
                      a `notElem` take (r-1) as
            where r = fromMaybe (-1) $ linSearch a as
+
+main :: IO ()
+main = mapM_ quickCheck [ prop_Included
+                        , prop_Excluded
+                        , prop_Minimal]
