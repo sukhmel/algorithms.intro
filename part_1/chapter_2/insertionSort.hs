@@ -8,18 +8,12 @@ import Data.List (sort)
 -- already  sorted,  first  element of  ending  is taken  and inserted into
 -- beginning in a way that retains order.
 insertionSortBy :: forall a. (a -> a -> Bool) -> [a] -> [a]
-insertionSortBy f = innerSort 2
-              where innerSort      :: Int -> [a] -> [a] -- sort n first elements
-                    innerSort _ [] = []                 -- and then sort  n+1
-                    innerSort n xs =                    -- in case n is still
-                           if n > length xs             -- less  or  equal to
-                              then xs                   -- length of the list
-                              else innerSort (n+1)
-                                 $ e `insertInto` begin
-                                           ++ rest
-                             where (begin, end) = splitAt (n-1) xs
-                                   e            = head end
-                                   rest         = tail end
+insertionSortBy f = innerSort . (,) []
+              where innerSort      :: ([a],[a]) -> [a] -- sort n first elements
+                    innerSort (a,[]) = a               -- and then  sort n+1 in
+                    innerSort (a, b) = innerSort       -- case n is still  less
+                              (e `insertInto` a, es)   -- or equal to length of
+                        where (e:es) = b               -- the list
 
                     insertInto          :: a -> [a] -> [a] -- insert an element
                     e `insertInto` es@(a:as) =             -- into  the list by
