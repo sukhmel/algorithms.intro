@@ -1,24 +1,27 @@
--- task 2.2.2
+module MergeSort where
 
-module SelectionSort where
-
-import Data.List (delete)
 import Test.QuickCheck
 
--- implementation of selection by predicate sort
-selectionSortBy       :: Eq a => ([a] -> a) -> [a] -> [a]
-selectionSortBy _ []  = []
-selectionSortBy _ [x] = [x]
-selectionSortBy f xs  = x : selectionSortBy f rest
-          where x     = f xs        -- an element is selected by a predicate and
-                rest  = delete x xs -- then removed from the rest of list
+mergeSortBy       :: (a -> a -> Bool) -> [a] -> [a]
+mergeSortBy _ [ ]    = [ ]
+mergeSortBy _ [a]    = [a]
+mergeSortBy f [a, b] = if a `f` b
+                          then [a, b]
+                          else [b, a]
+mergeSortBy f xs     = mergeSortBy f beg
+               `merge` mergeSortBy f end
+    where (beg, end) = splitAt (length xs `div` 2) xs
+          merge [] b = b
+          merge a [] = a
+          merge (a:as) (b:bs) = if a `f` b
+                                   then a: merge as (b:bs)
+                                   else b: merge (a:as) bs
 
--- test that an opposite predicate gives reversed list
 -- set up in order to copy tests to other files
-tested  :: Eq a => ([a] -> a) -> [a] -> [a]
-lt, gt  ::  [Int] -> Int
-tested  = selectionSortBy
-(lt,gt) = (minimum, maximum)
+tested  ::  (a -> a -> Bool) -> [a] -> [a]
+lt, gt  ::  Int -> Int -> Bool
+tested  = mergeSortBy
+(lt,gt) = ((<),(>))
 
 -- test that negated predicate gives reverse order
 prop_Reversible    :: [Int] -> Bool
@@ -56,4 +59,3 @@ main = do
        mapM_ quickCheck [ prop_Reversible
                         , prop_Contanity
                         , prop_Length    ]
-
