@@ -2,8 +2,7 @@
 
 module InsertSort where
 
-import Data.List (sort)
-import Test.QuickCheck
+import SortingTests
 
 -- Implementation of insertion sorting. At each step beginning of a list is
 -- already  sorted,  first  element of  ending  is taken  and inserted into
@@ -27,26 +26,6 @@ insertionSortBy f = innerSort . (,) []
                                                else es ++ [e]
                     e `insertInto` []        = [e]
 
--- ensure that flipping of predicate creates reversed result (although
--- that's not really true for predicates same as their flip)
-prop_Negation    :: [Int] -> Bool
-prop_Negation xs = insertionSortBy (flip (<)) xs ==
-          reverse (insertionSortBy (<)        xs)
-
--- ensure that there is same amount of elements
-prop_Length      :: [Int] -> Bool
-prop_Length   xs = length xs == length (insertionSortBy (<) xs)
-
--- ensure elements are same after sorting
-prop_Safety      :: [Int] -> Bool
-prop_Safety   xs = sort xs == sort (insertionSortBy (<) xs)
-
--- a little cheat ;-)
-prop_Correct     :: [Int] -> Bool
-prop_Correct  xs = sort xs == insertionSortBy (<) xs
-
+-- | perform tests with merge sort using quickcheck
 main :: IO ()
-main = mapM_ quickCheck [ prop_Safety
-                        , prop_Negation
-                        , prop_Length
-                        , prop_Correct ]
+main = perform ((<),(>)) insertionSortBy
