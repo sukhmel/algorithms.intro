@@ -5,9 +5,6 @@ import SortingTests
 mergeSortBy       :: (a -> a -> Bool) -> [a] -> [a]
 mergeSortBy _ [ ]    = [ ]
 mergeSortBy _ [a]    = [a]
-mergeSortBy f [a, b] = if a `f` b
-                          then [a, b]
-                          else [b, a]
 mergeSortBy f xs     = mergeSortBy f beg
                `merge` mergeSortBy f end
     where (beg, end) = splitAt (length xs `div` 2) xs
