@@ -1,4 +1,4 @@
--- task 2.1.3
+-- Excercise 2.1.3
 
 module LinearSearch where
 

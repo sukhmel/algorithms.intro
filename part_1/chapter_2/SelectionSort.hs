@@ -1,4 +1,4 @@
--- task 2.2.2
+-- Excercise 2.2.2
 
 module SelectionSort where
 

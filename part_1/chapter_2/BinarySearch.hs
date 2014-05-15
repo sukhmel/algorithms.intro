@@ -1,4 +1,4 @@
--- task 2.3.5
+-- Excercise 2.3.5
 
 module BinarySearch where
 

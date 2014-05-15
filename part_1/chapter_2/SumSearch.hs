@@ -1,4 +1,4 @@
--- task 2.3.7: determine if there are two such elements in a given list s,
+-- Excercise 2.3.7: determine if there are two such elements in a given list s,
 -- that their sum is equal to a given value x
 
 module SumSearch where
