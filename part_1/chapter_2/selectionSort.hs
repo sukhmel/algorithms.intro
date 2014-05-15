@@ -13,6 +13,6 @@ selectionSortBy f xs  = x : selectionSortBy f rest
           where x     = f xs        -- an element is selected by a predicate and
                 rest  = delete x xs -- then removed from the rest of list
 
--- | perform tests with merge sort using quickcheck
+-- | perform tests with selection sort using quickcheck
 main :: IO ()
 main = perform (minimum, maximum) selectionSortBy

@@ -4,28 +4,45 @@ module InsertSort where
 
 import SortingTests
 
+type Predicate a = a -> a -> Bool
+type Splitter  a = [a] -> ([a], [a])
+type Modifier  a = [a] -> [a]
+type Inserter  a = a -> Modifier a
+type InsertBy  a = Predicate a -> Inserter a
+
 -- Implementation of insertion sorting. At each step beginning of a list is
 -- already  sorted,  first  element of  ending  is taken  and inserted into
 -- beginning in a way that retains order.
-insertionSortBy :: forall a. (a -> a -> Bool) -> [a] -> [a]
-insertionSortBy f = innerSort . (,) []
-              where innerSort      :: ([a],[a]) -> [a] -- sort n first elements
-                    innerSort (a,[]) = a               -- and then  sort n+1 in
-                    innerSort (a, b) = innerSort       -- case n is still  less
-                              (e `insertInto` a, es)   -- or equal to length of
-                        where (e:es) = b               -- the list
+insertSortBy       :: forall a. InsertBy  a
+                             -> Predicate a
+                             -> Modifier  a
+insertSortBy ins f = innerSort . (,) []
+               where innerSort      :: ([a],[a]) -> [a] -- sort n first elements
+                     innerSort (a,[]) = a               -- and then  sort n+1 in
+                     innerSort (a, b) = innerSort       -- case n is still  less
+                               (ins f e a, es)          -- or equal to length of
+                         where (e:es) = b               -- the list
 
-                    insertInto          :: a -> [a] -> [a] -- insert an element
-                    e `insertInto` es@(a:as) =             -- into  the list by
-                              let c          = last es     -- given predicate.
-                                  rest       = init es
-                              in  case as of
-                                       [] -> if e `f` a then [e, a] else [a, e]
-                                       _  -> if e `f` c
-                                               then e `insertInto` rest ++ [c]
-                                               else es ++ [e]
-                    e `insertInto` []        = [e]
+-- | Insertion functions highlighting difference between binary and linear
+-- insertion algorithms.
+insLinearBy, insBinaryBy :: InsertBy a
+insLinearBy = insWithBy (\xs -> splitAt (length xs   -   1) xs)
+insBinaryBy = insWithBy (\xs -> splitAt (length xs `div` 2) xs)
 
--- | perform tests with merge sort using quickcheck
+-- | Insert  an element into list by splitting using specified splitter and
+-- inserting into one of resulting parts based on a predicate given.
+insWithBy        :: Splitter  a
+                 -> InsertBy  a
+insWithBy _  _ e []  = [e]
+insWithBy _  f e [v] = if e `f` v
+                          then [e, v]
+                          else [v, e]
+insWithBy sp f e es  = if e `f` head second
+                          then insWithBy sp f e first ++ second
+                          else first ++ insWithBy sp f e second
+        where (first, second) = sp es
+
+-- | perform tests with insertion sort using quickcheck
 main :: IO ()
-main = perform ((<),(>)) insertionSortBy
+main = mapM_ (perform ((<),(>)) . insertSortBy)
+                     [insBinaryBy, insLinearBy]
