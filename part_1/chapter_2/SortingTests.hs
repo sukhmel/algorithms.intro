@@ -1,3 +1,20 @@
+{- |
+Module      : $Header$
+Description : Tests for sort functions.
+Copyright   : (c) Sukhmel Vladislav
+License     : MIT
+
+Maintainer  : sukhmel.v@gmail.com
+Stability   : unstable
+Portability : portabile
+
+Automatic  testing  sort functions for some  indicators  of correct  performing,
+using [Int] lists.
+Tested properties are  correct order of elements after sorting,  correct length,
+reversed order upon using opposite predicate for sorting, and the fact that all
+elements of original list are elements of sorted one and vice versa.
+-}
+
 module SortingTests where
 
 import Test.QuickCheck

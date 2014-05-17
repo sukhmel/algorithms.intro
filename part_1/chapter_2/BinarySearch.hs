@@ -1,4 +1,16 @@
--- Excercise 2.3.5
+{- |
+Module      : $Header$
+Description : Binary search implementation
+Copyright   : (c) Sukhmel Vladislav
+License     : MIT
+
+Maintainer  : sukhmel.v@gmail.com
+Stability   : unstable
+Portability : portabile
+
+Excercise 2.3.5, implementation of binary search in sorted list, based on
+ordering of list and a comparing predicate.
+-}
 
 module BinarySearch where
 
@@ -28,6 +40,9 @@ binarySearchInBy ord f as = search $ zip as [0..]
 -- | Default search in ascending sorted list by simple comparation.
 binarySearch ::  Ord a => a -> [a] -> Maybe Int
 binarySearch a = binarySearchInBy LT (compare a)
+
+--------------------------------------------------------------------------------
+--  Auto-tests
 
 -- | Test ensuring that for existing element, position found holds same value
 -- as original.

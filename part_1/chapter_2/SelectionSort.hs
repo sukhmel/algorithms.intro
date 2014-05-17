@@ -1,4 +1,15 @@
--- Excercise 2.2.2
+{- |
+Module      : $Header$
+Description : Selection sort.
+Copyright   : (c) Sukhmel Vladislav
+License     : MIT
+
+Maintainer  : sukhmel.v@gmail.com
+Stability   : unstable
+Portability : portabile
+
+Excercise 2.2.2, selection sort by given selection function.
+-}
 
 module SelectionSort where
 

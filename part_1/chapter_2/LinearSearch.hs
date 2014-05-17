@@ -1,4 +1,15 @@
--- Excercise 2.1.3
+{- |
+Module      : $Header$
+Description : Linear search.
+Copyright   : (c) Sukhmel Vladislav
+License     : MIT
+
+Maintainer  : sukhmel.v@gmail.com
+Stability   : unstable
+Portability : portabile
+
+Excercise 2.1.3 linear search, and tests to check correctness.
+-}
 
 module LinearSearch where
 

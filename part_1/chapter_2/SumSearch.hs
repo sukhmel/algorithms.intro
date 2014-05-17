@@ -1,5 +1,16 @@
--- Excercise 2.3.7: determine if there are two such elements in a given list s,
--- that their sum is equal to a given value x
+{- |
+Module      : $Header$
+Description : Search for a value x in all sums of list elements.
+Copyright   : (c) Sukhmel Vladislav
+License     : MIT
+
+Maintainer  : sukhmel.v@gmail.com
+Stability   : unstable
+Portability : portabile
+
+Excercise 2.3.7, search for a possibility (and indices) of taking two elements of a list to
+construct sum with a given value.
+-}
 
 module SumSearch where
 

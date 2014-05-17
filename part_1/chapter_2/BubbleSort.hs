@@ -1,3 +1,18 @@
+{- |
+Module      : $Header$
+Description : Bubble sort.
+Copyright   : (c) Sukhmel Vladislav, Kodi Arfer, Bob9000
+License     : MIT
+
+Maintainer  : sukhmel.v@gmail.com
+Stability   : unstable
+Portability : portabile
+
+Some implementations of bubble sort by predicate. One of them is taken from
+Rosetta code: that is version from Kodi Arfer and Bob9000.  Kodi's page can
+be found here http://rosettacode.org/wiki/User:Underscore
+-}
+
 module BubbleSort where
 
 import Data.Maybe

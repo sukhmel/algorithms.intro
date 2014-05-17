@@ -1,5 +1,21 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 
+{- |
+Module      : $Header$
+Description : Insertion sort implementation.
+Copyright   : (c) Sukhmel Vladislav
+License     : MIT
+
+Maintainer  : sukhmel.v@gmail.com
+Stability   : unstable
+Portability : portabile
+
+Insertion sort, by given predicate (e.g. (<) or (>)).
+Two implementations are made:
+    with linear insertion,
+    with binary-search insertion.
+-}
+
 module InsertSort where
 
 import SortingTests

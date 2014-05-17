@@ -1,5 +1,19 @@
 {-# LANGUAGE FlexibleContexts #-}
 
+{- |
+Module      : $Header$
+Description : Merge sort and invertion counter.
+Copyright   : (c) Sukhmel Vladislav
+License     : MIT
+
+Maintainer  : sukhmel.v@gmail.com
+Stability   : unstable
+Portability : portabile
+
+Merge sort implementation, and counter of inversions in a list, using same
+monadic algorithm.
+-}
+
 module MergeSort where
 
 import SortingTests
