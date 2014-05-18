@@ -17,7 +17,9 @@ monadic algorithm.
 module MergeSort where
 
 import SortingTests
+
 import Control.Monad.Writer
+import Test.QuickCheck
 
 inversions ::  MonadWriter [(t, t)] m => t -> [t] -> m ()
 inversions i js = writer ((), [(i, j) | j <- js])
@@ -43,9 +45,7 @@ mergeSortBy f = map fst . fst . runWriter . mergeSortWrapper f
 -- | Task 2.4 (e) count all invesions in a list pairs (i, j) where i < j, but
 -- a[j] < a[i]
 countInverses :: Ord a => [a] -> Int
-countInverses = length . snd . runWriter . mergeSortWrapper (<)
-
-
+countInverses = length . snd . runWriter . mergeSortWrapper (<=)
 
 mergeSortWrapper f xs = performMergeSortBy f $ zip xs [0..]
 
@@ -61,7 +61,11 @@ performMergeSortBy f xs     = do
               mergeBy f first second
     where (beg, end) = splitAt (length xs `div` 2) xs
 
-
+prop_Number    :: [Int] -> Bool
+prop_Number xs = inv == countInverses xs
+     where inv = length [(i,j) | i <- [0..length xs-1],
+                                 j <- [0..i-1],
+                                 xs !! i < xs !! j]
 
 -- | perform tests with merge sort using quickcheck
 main :: IO ()
