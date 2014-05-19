@@ -45,8 +45,14 @@ mergeSortBy f = map fst . fst . runWriter . mergeSortWrapper f
 -- | Task 2.4 (e) count all invesions in a list pairs (i, j) where i < j, but
 -- a[j] < a[i]
 countInverses :: Ord a => [a] -> Int
-countInverses = length . snd . runWriter . mergeSortWrapper (<=)
+countInverses = length . getInverses
 
+getInverses   :: Ord a => [a] -> [(Int, Int)]
+getInverses   = snd . runWriter . mergeSortWrapper (<=)
+
+mergeSortWrapper :: MonadWriter [(Int, Int)] m
+                 =>  (a -> a -> Bool)
+                 -> [a] -> m [(a, Int)]
 mergeSortWrapper f xs = performMergeSortBy f $ zip xs [0..]
 
 performMergeSortBy :: MonadWriter [(Int, Int)] m
@@ -67,6 +73,18 @@ prop_Number xs = inv == countInverses xs
                                  j <- [0..i-1],
                                  xs !! i < xs !! j]
 
+prop_Indices    :: [Int] -> Bool
+prop_Indices xs = all isInverse $ getInverses xs
+    where isInverse (i,j) = a /= EQ
+                         && b /= EQ
+                         && b /= a
+                  where a = compare (xs !! i)
+                                    (xs !! j)
+                        b = compare i j
+
 -- | perform tests with merge sort using quickcheck
 main :: IO ()
-main = perform ((<),(>)) mergeSortBy
+main = do
+        mapM_ quickCheck [ prop_Indices
+                         , prop_Number]
+        perform ((<),(>)) mergeSortBy
